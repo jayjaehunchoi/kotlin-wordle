@@ -19,13 +19,13 @@ class WordleResultTest {
         isAnswer.shouldBeFalse()
     }
 
-    @DisplayName("6자를 입력하지 않으면 예외가 발생한다.")
+    @DisplayName("5자를 입력하지 않으면 예외가 발생한다.")
     @Test
     fun checkAnswerNotValidInput() {
         val result = WordleResult("reboot")
         shouldThrow<IllegalArgumentException> {
             result.checkAnswer("elbrokss")
-        }.shouldHaveMessage("[ERROR] 정답은 6글자로 입력하세요.")
+        }.shouldHaveMessage("[ERROR] 정답은 5글자로 입력하세요.")
     }
 
     @DisplayName("정답을 확인하고 정답이다.")
@@ -42,7 +42,7 @@ class WordleResultTest {
         val result = WordleResult("reboot")
         result.checkAnswer("elbrok")
 
-        assertSoftly(result.answerSymbols[0].symbols) {
+        assertSoftly(result.results[0].symbols) {
             it[0] shouldBe AnswerSymbol.DIFFERENT_LOCATION
             it[1] shouldBe AnswerSymbol.WRONG
             it[2] shouldBe AnswerSymbol.CORRECT
