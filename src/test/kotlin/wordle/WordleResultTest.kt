@@ -6,39 +6,34 @@ import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.throwable.shouldHaveMessage
-import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
 
 class WordleResultTest {
 
-    @DisplayName("정답을 확인하고 틀린다.")
     @Test
-    fun checkAnswerWrong() {
+    fun `정답을 확인하고 틀린다`() {
         val result = WordleResult("rebut")
         val isAnswer = result.checkAnswer("elbro")
         isAnswer.shouldBeFalse()
     }
 
-    @DisplayName("5자를 입력하지 않으면 예외가 발생한다.")
     @Test
-    fun checkAnswerNotValidInput() {
+    fun `5자를 입력하지 않으면 예외가 발생한다`() {
         val result = WordleResult("rebut")
         shouldThrow<IllegalArgumentException> {
             result.checkAnswer("elbroks")
         }.shouldHaveMessage("[ERROR] 정답은 5글자로 입력하세요.")
     }
 
-    @DisplayName("정답을 확인하고 정답이다.")
     @Test
-    fun checkAnswerCorrect() {
+    fun `정답을 확인하고 정답이다`() {
         val result = WordleResult("rebut")
         val isAnswer = result.checkAnswer("rebut")
         isAnswer.shouldBeTrue()
     }
 
-    @DisplayName("결과를 확인한다.")
     @Test
-    fun checkResult() {
+    fun `결과를 확인한다`() {
         val result = WordleResult("rebut")
         result.checkAnswer("elbrk")
 
@@ -51,13 +46,20 @@ class WordleResultTest {
         }
     }
 
-    @DisplayName("6회 실행할 경우 종료되었는지 확인한다")
     @Test
-    fun isFinish() {
+    fun `6회 실행할 경우 종료되었는지 확인한다`() {
         val result = WordleResult("rebut")
         for (idx in 0..5) {
             result.checkAnswer("elbro")
         }
+        result.isFinish().shouldBeTrue()
+    }
+
+    @Test
+    fun `정답을 맞힐 경우 종료되었는지 확인한다`() {
+        val result = WordleResult("rebut")
+        result.checkAnswer("rebut")
+
         result.isFinish().shouldBeTrue()
     }
 }
