@@ -1,6 +1,7 @@
 package wordle
 
 private const val REQUIRED_SIZE = 5
+private const val MAX_ROUND = 6
 
 class WordleResult(
     private val answer: String,
@@ -15,14 +16,17 @@ class WordleResult(
         require(word.length == REQUIRED_SIZE) { "[ERROR] 정답은 5글자로 입력하세요." }
         val wordSpell = word.toList()
         val answerSpell = answer.toList()
-        val answers = mutableListOf<AnswerSymbol>()
-        for (idx in wordSpell.indices) {
-            answers.add(compareAnswer(wordSpell[idx],idx , answerSpell))
-        }
-        val answerSymbols = AnswerSymbols(answers)
+        val answerSymbols = AnswerSymbols(wordSpell.indices
+            .map {
+                compareAnswer(wordSpell[it], it, answerSpell)
+            })
         results.add(answerSymbols)
-        round++
+        nextRound()
         return answerSymbols.isAnswerCorrect()
+    }
+
+    private fun nextRound() {
+        round++
     }
 
     private fun compareAnswer(
@@ -40,6 +44,13 @@ class WordleResult(
     }
 
     fun isFinish(): Boolean {
-        return round == 6
+        return round == MAX_ROUND || isLastAnswerCorrect()
+    }
+
+    private fun isLastAnswerCorrect(): Boolean {
+        if (results.isEmpty()) {
+            return false
+        }
+        return results[results.lastIndex].isAnswerCorrect()
     }
 }

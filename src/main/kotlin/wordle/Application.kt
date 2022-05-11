@@ -1,21 +1,19 @@
 package wordle
 
 import java.io.FileReader
-import java.time.LocalDate
+
+private const val ANSWER_SOURCE = "src/main/resources/words.txt"
 
 fun main() {
-    val answer = Words(FileReader("src/main/resources/words.txt").readLines())
-        .createAnswer(LocalDate.now())
+    val answer = Words(FileReader(ANSWER_SOURCE).readLines())
+        .createAnswer(STANDARD_DATE)
     printGuide()
     val wordleResult = WordleResult(answer)
-    while (!wordleResult.checkAnswer(insertAnswer()) && !wordleResult.isFinish()) {
+    while (!wordleResult.isFinish()) {
+        if (wordleResult.checkAnswer(insertAnswer())) {
+            printAnswerRound(wordleResult.round)
+        }
         printResults(wordleResult.results)
     }
-    val results = wordleResult.results
-    if (AnswerSymbols(results[results.lastIndex].symbols).isAnswerCorrect()) {
-        printAnswerRound(wordleResult.round)
-    }
-    printResults(results)
-
 }
 
