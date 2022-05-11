@@ -1,8 +1,10 @@
 package wordle
 
+import io.kotest.assertions.assertSoftly
 import io.kotest.assertions.throwables.shouldThrow
 import io.kotest.matchers.booleans.shouldBeFalse
 import io.kotest.matchers.booleans.shouldBeTrue
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.throwable.shouldHaveMessage
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test
@@ -32,5 +34,21 @@ class WordleResultTest {
         val result = WordleResult("reboot")
         val isAnswer = result.checkAnswer("reboot")
         isAnswer.shouldBeTrue()
+    }
+
+    @DisplayName("결과를 확인한다.")
+    @Test
+    fun checkResult() {
+        val result = WordleResult("reboot")
+        result.checkAnswer("elbrok")
+
+        assertSoftly(result.answerSymbols[0].symbols) {
+            it[0] shouldBe AnswerSymbol.DIFFERENT_LOCATION
+            it[1] shouldBe AnswerSymbol.WRONG
+            it[2] shouldBe AnswerSymbol.CORRECT
+            it[3] shouldBe AnswerSymbol.DIFFERENT_LOCATION
+            it[4] shouldBe AnswerSymbol.CORRECT
+            it[5] shouldBe AnswerSymbol.WRONG
+        }
     }
 }

@@ -4,7 +4,7 @@ private const val REQUIRED_SIZE = 6
 
 class WordleResult(
     private val answer: String,
-    var results: MutableList<AnswerResults>
+    var answerSymbols: MutableList<AnswerSymbols>
 ) {
     constructor(answer: String) : this(answer, mutableListOf())
 
@@ -15,9 +15,9 @@ class WordleResult(
         for (idx in wordSpell.indices) {
             answers.add(compareAnswer(wordSpell, idx))
         }
-        val answerResults = AnswerResults(answers)
-        results.add(answerResults)
-        return answerResults.isAnswerCorrect()
+        val answerSymbols = AnswerSymbols(answers)
+        this.answerSymbols.add(answerSymbols)
+        return answerSymbols.isAnswerCorrect()
     }
 
     private fun compareAnswer(

@@ -1,6 +1,6 @@
 package wordle
 
-class AnswerResults(val symbols: List<AnswerSymbol>) {
+class AnswerSymbols(val symbols: List<AnswerSymbol>) {
 
     fun isAnswerCorrect(): Boolean {
         val answer = (1..6)
